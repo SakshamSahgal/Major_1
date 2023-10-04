@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+</head>
+
+<body>
+    <%- include('./ReusableComponents/BootstrapCDN.ejs') %>
+    <div class="container">
+        
+            <div class="row justify-content-center align-items-center" style="height:100vh;">
+                
+                <div class="card">
+                    <div class="card-header text-center">Fleet Management System</div>
+                    <div class="card-body text-center">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">Admin Login</div>
+                                    <div class="card-body text-center">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="adminUsername">Username</label>
+                                                <input type="text" class="form-control" id="adminUsername" placeholder="Enter username">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="adminPassword">Password</label>
+                                                <input type="password" class="form-control" id="adminPassword" placeholder="Enter password">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Login</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">Customer Login</div>
+                                    <div class="card-body text-center">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="customerUsername">Username</label>
+                                                <input type="text" class="form-control" id="customerUsername" placeholder="Enter username">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="customerPassword">Password</label>
+                                                <input type="password" class="form-control" id="customerPassword" placeholder="Enter password">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Login</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+</body>
+</html>
