@@ -1,6 +1,7 @@
-module.exports = () =>  {
-    
-    const mqtt = require('mqtt');
+
+  const mqtt = require('mqtt');
+
+  function subscribeToMQTT(topic) {
     
     // Define the MQTT broker (HiveMQ public MQTT server) and port for standard MQTT
     const brokerAddress = 'mqtt://broker.hivemq.com';
@@ -12,12 +13,12 @@ module.exports = () =>  {
     // Callback function to handle connection status
     client.on('connect', () => {
       console.log('Connected to MQTT broker');
-      client.subscribe('topic_to_drive_dolly', (err) => {
+      client.subscribe(topic, (err) => {
         if (!err) {
-          console.log('Subscribed to topic_to_drive_dolly');
+          console.log('Subscribed to', topic);
         }
       });
-    });
+    })
     
     client.on('disconnect', () => {
       console.log('Disconnected from MQTT broker');
@@ -25,6 +26,6 @@ module.exports = () =>  {
     });
     
     client.on('message', (topic, message) => {
-      console.log(`Received message '${message.toString()}' on topic '${topic}'`);
+      console.log(JSON.parse(message.toString()));
     });
-}
+  }

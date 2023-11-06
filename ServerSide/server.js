@@ -1,7 +1,10 @@
 const express = require('express')
 const app = express()
 const path = require("path");
-const mqttSubscriber = require('./mqtt.js')
+
+const {subscribeToMQTT} = require('./mqtt.js')
+
+
 require("dotenv").config()
 // Set the view engine to EJS
 app.set('view engine', 'ejs');
@@ -13,9 +16,10 @@ app.use(express.urlencoded({ extended: false }));
 
 require("./auth.js")(app,path);
 
+
 app.listen(3000, () => {
     console.log('Server is running on port 3000')
-    mqttSubscriber()
+    // subscribeToMQTT("truck/dolly1")
 })
 
 app.get('/', (req, res) => {

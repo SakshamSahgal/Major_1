@@ -4,8 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS for centering the canvas */
+        #dashboard-container {
+            display: flex;
+            justify-content: center;
+        }
+        #canvas {
+            width: 400px; /* Adjust the canvas size as needed */
+            height: 400px; /* Adjust the canvas size as needed */
+        }
+    </style>
 </head>
 <body>
-    Admin Dashboard
+    <div class="container-fluid">
+        <div class="row">
+            <div id="dashboard-container" class="col-9">
+                <canvas id="canvas"></canvas>
+            </div>
+            <div class="col-3">
+                <!-- Bootstrap card for the vertical list -->
+                <div class="card">
+                    <div class="card-header">Truck Details</div>
+                    <div class="card-body">
+                        <!-- Vertical list for truck details -->
+                        <div class="list-group">
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <h5>Truck 1</h5>
+                                <p>Current Position: (Latitude, Longitude)</p>
+                                <p>Fuel: 80%</p>
+                                <p>Remaining Capacity: 1200 lbs</p>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <h5>Truck 2</h5>
+                                <p>Current Position: (Latitude, Longitude)</p>
+                                <p>Fuel: 70%</p>
+                                <p>Remaining Capacity: 1000 lbs</p>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <h5>Truck 3</h5>
+                                <p>Current Position: (Latitude, Longitude)</p>
+                                <p>Fuel: 90%</p>
+                                <p>Remaining Capacity: 1500 lbs</p>
+                            </a>
+                            <!-- Add more truck details as needed -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap and other JavaScript libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
+    
+    <!-- Connection to Free Public MQTT Broker by HiveMQ  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/2.18.7/mqtt.min.js"></script>
+
+<script>
+    
+    const brokerUrl = "ws://broker.hivemq.com:8000/mqtt"; // Non-secure WebSocket
+    const client = mqtt.connect(brokerUrl);
+
+    client.on("connect", function () {
+        console.log("Connected to HiveMQ");
+
+        let topic = "truck/dolly1";
+        client.subscribe(topic);
+    });
+
+    client.on("message", function (topic, message) {
+        console.log(`Received message on topic: ${topic}, message: ${message.toString()}`);
+    });
+
+</script>
