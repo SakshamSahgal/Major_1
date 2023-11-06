@@ -29,3 +29,5 @@
       console.log(JSON.parse(message.toString()));
     });
   }
+
+  module.exports = {subscribeToMQTT}
