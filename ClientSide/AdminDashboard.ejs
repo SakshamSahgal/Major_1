@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <!-- Include Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <%- include('./ReusableComponents/BootstrapCDN.ejs') %>
     <style>
         /* Custom CSS for centering the canvas */
         #dashboard-container {
@@ -16,9 +15,40 @@
             width: 400px; /* Adjust the canvas size as needed */
             height: 400px; /* Adjust the canvas size as needed */
         }
+
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="Truck_1_info">
+                        <label class="custom-control-label" for="Truck_1_info">&nbsp; Truck 1 &nbsp;</label>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="Truck_2_info">
+                        <label class="custom-control-label" for="Truck_2_info">&nbsp; Truck 2 &nbsp;</label>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="Truck_3_info">
+                        <label class="custom-control-label" for="Truck_3_info">&nbsp; Truck 3 &nbsp;</label>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="Truck_4_info">
+                        <label class="custom-control-label" for="Truck_4_info">&nbsp; Truck 4 &nbsp;</label>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
     <div class="container-fluid">
         <div class="row">
             <div id="dashboard-container" class="col-9">
@@ -33,19 +63,25 @@
                         <div class="list-group">
                             <a href="#" class="list-group-item list-group-item-action">
                                 <h5>Truck 1</h5>
-                                <p>Current Position: (Latitude, Longitude)</p>
+                                <p>Current Position:</p> <span>x:</span><span id="truck1x"></span><span>y:</span><span id="truck1y"></span>
                                 <p>Fuel: 80%</p>
                                 <p>Remaining Capacity: 1200 lbs</p>
                             </a>
                             <a href="#" class="list-group-item list-group-item-action">
                                 <h5>Truck 2</h5>
-                                <p>Current Position: (Latitude, Longitude)</p>
+                                <p>Current Position:</p> <span>x:</span><span id="truck2x"></span><span>y:</span><span id="truck2y"></span>
                                 <p>Fuel: 70%</p>
                                 <p>Remaining Capacity: 1000 lbs</p>
                             </a>
                             <a href="#" class="list-group-item list-group-item-action">
                                 <h5>Truck 3</h5>
-                                <p>Current Position: (Latitude, Longitude)</p>
+                                <p>Current Position:</p> <span>x:</span><span id="truck3x"></span><span>y:</span><span id="truck3y"></span>
+                                <p>Fuel: 90%</p>
+                                <p>Remaining Capacity: 1500 lbs</p>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <h5>Truck 4</h5>
+                                <p>Current Position:</p> <span>x:</span><span id="truck4x"></span><span>y:</span><span id="truck4y"></span>
                                 <p>Fuel: 90%</p>
                                 <p>Remaining Capacity: 1500 lbs</p>
                             </a>
@@ -56,30 +92,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Include Bootstrap and other JavaScript libraries -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
-    
-    <!-- Connection to Free Public MQTT Broker by HiveMQ  -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/2.18.7/mqtt.min.js"></script>
-
-<script>
-    
-    const brokerUrl = "ws://broker.hivemq.com:8000/mqtt"; // Non-secure WebSocket
-    const client = mqtt.connect(brokerUrl);
-
-    client.on("connect", function () {
-        console.log("Connected to HiveMQ");
-
-        let topic = "truck/dolly1";
-        client.subscribe(topic);
-    });
-
-    client.on("message", function (topic, message) {
-        console.log(`Received message on topic: ${topic}, message: ${message.toString()}`);
-    });
-
-</script>
+<script src="/Scripts/AdminDashboard.js"></script>
