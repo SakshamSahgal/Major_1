@@ -5,7 +5,7 @@
     streamCanvas = document.getElementById("canvas");
     streamCtx = streamCanvas.getContext("2d");
     var static = new Image();
-    static.src = "/map.jpeg";
+    static.src = "/map.png";
     static.onload = function() {
         streamCtx.drawImage(static, 0, 0);
     };
@@ -137,7 +137,7 @@
 
 function drawPoint(x,y,color){
     streamCtx.beginPath();                      // Start a new path
-    streamCtx.arc(-8.26*y+820,-8.1*x+702, 4, 0, 2 * Math.PI);     // Draw a circle of radius 5
+    streamCtx.arc(-8.25*y+818,-8.1*x+702, 4, 0, 2 * Math.PI);     // Draw a circle of radius 5
     streamCtx.fillStyle = color;                // Set fill color to blue
     streamCtx.fill();                           // Fill the path
     // Schedule clearing the point after the specified duration
@@ -149,7 +149,7 @@ function drawPoint(x,y,color){
 // Function to clear the point
 function clearPoint() {
     var static = new Image();
-    static.src = "/map.jpeg";
+    static.src = "/map.png";
     static.onload = function() {
         streamCtx.drawImage(static, 0, 0);
     };
