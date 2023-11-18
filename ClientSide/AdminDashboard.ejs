@@ -11,11 +11,6 @@
             display: flex;
             justify-content: center;
         }
-        #canvas {
-            width: 400px; /* Adjust the canvas size as needed */
-            height: 400px; /* Adjust the canvas size as needed */
-        }
-
     </style>
 </head>
 <body>
@@ -51,8 +46,9 @@
     </nav>
     <div class="container-fluid">
         <div class="row">
-            <div id="dashboard-container" class="col-9">
-                <canvas id="canvas"></canvas>
+            <br>
+            <div id="dashboard-container" class="col-9 my-3">
+                <canvas id="canvas" width="1040px"  height="737px" style="width: 1040px; height: 737px;"></canvas>
             </div>
             <div class="col-3">
                 <!-- Bootstrap card for the vertical list -->
@@ -63,27 +59,35 @@
                         <div class="list-group">
                             <a href="#" class="list-group-item list-group-item-action">
                                 <h5>Truck 1</h5>
-                                <p>Current Position:</p> <span>x:</span><span id="truck1x"></span><span>y:</span><span id="truck1y"></span>
-                                <p>Fuel: 80%</p>
-                                <p>Remaining Capacity: 1200 lbs</p>
+                                <p>Current Position:</p> 
+                                <span>x:</span><span id="truck1x"></span><br>
+                                <span>y:</span><span id="truck1y"></span><br>
+                                <!-- <p>Fuel: 80%</p> -->
+                                <!-- <p>Remaining Capacity: 1200 lbs</p> -->
                             </a>
                             <a href="#" class="list-group-item list-group-item-action">
                                 <h5>Truck 2</h5>
-                                <p>Current Position:</p> <span>x:</span><span id="truck2x"></span><span>y:</span><span id="truck2y"></span>
-                                <p>Fuel: 70%</p>
-                                <p>Remaining Capacity: 1000 lbs</p>
+                                <p>Current Position:</p> 
+                                <span>x:</span><span id="truck2x"></span><br>
+                                <span>y:</span><span id="truck2y"></span><br>
+                                <!-- <p>Fuel: 70%</p> -->
+                                <!-- <p>Remaining Capacity: 1000 lbs</p> -->
                             </a>
                             <a href="#" class="list-group-item list-group-item-action">
                                 <h5>Truck 3</h5>
-                                <p>Current Position:</p> <span>x:</span><span id="truck3x"></span><span>y:</span><span id="truck3y"></span>
-                                <p>Fuel: 90%</p>
-                                <p>Remaining Capacity: 1500 lbs</p>
+                                <p>Current Position:</p> 
+                                <span>x:</span><span id="truck3x"></span><br>
+                                <span>y:</span><span id="truck3y"></span><br>
+                                <!-- <p>Fuel: 90%</p> -->
+                                <!-- <p>Remaining Capacity: 1500 lbs</p> -->
                             </a>
                             <a href="#" class="list-group-item list-group-item-action">
                                 <h5>Truck 4</h5>
-                                <p>Current Position:</p> <span>x:</span><span id="truck4x"></span><span>y:</span><span id="truck4y"></span>
-                                <p>Fuel: 90%</p>
-                                <p>Remaining Capacity: 1500 lbs</p>
+                                <p>Current Position:</p> 
+                                <span>x:</span><span id="truck4x"></span><br>
+                                <span>y:</span><span id="truck4y"></span><br>
+                                <!-- <p>Fuel: 90%</p> -->
+                                <!-- <p>Remaining Capacity: 1500 lbs</p> -->
                             </a>
                             <!-- Add more truck details as needed -->
                         </div>

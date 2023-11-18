@@ -2,12 +2,19 @@
     truck2Btn = document.getElementById("Truck_2_info");
     truck3Btn = document.getElementById("Truck_3_info");
     truck4Btn = document.getElementById("Truck_4_info");
-    
+    streamCanvas = document.getElementById("canvas");
+    streamCtx = streamCanvas.getContext("2d");
+    var static = new Image();
+    static.src = "/map.jpeg";
+    static.onload = function() {
+        streamCtx.drawImage(static, 0, 0);
+    };
+
     var socket1; // Variable for the WebSocket connection for Truck 1
     var socket2; // Variable for the WebSocket connection for Truck 2
     var socket3; // Variable for the WebSocket connection for Truck 3
     var socket4; // Variable for the WebSocket connection for Truck 4
-
+    var socket5; // Variable for the WebSocket connection for Camera
 
     truck1Btn.addEventListener("change", function(){
         if(truck1Btn.checked){
@@ -29,6 +36,7 @@
                 let truck1y = document.getElementById("truck1y");
                 truck1x.innerHTML = truck1Data.x;
                 truck1y.innerHTML = truck1Data.y;
+                drawPoint(truck1Data.x,truck1Data.y,"red");
             };
         }
         else{
@@ -57,6 +65,7 @@
                 let truck2y = document.getElementById("truck2y");
                 truck2x.innerHTML = truck2Data.x;
                 truck2y.innerHTML = truck2Data.y;
+                drawPoint(truck2Data.x,truck2Data.y,"blue");
             };
         }
         else{
@@ -85,6 +94,7 @@
                 let truck3y = document.getElementById("truck3y");
                 truck3x.innerHTML = truck3Data.x;
                 truck3y.innerHTML = truck3Data.y;
+                drawPoint(truck3Data.x,truck3Data.y,"green");
             };
         }
         else{
@@ -113,6 +123,7 @@
                 let truck4y = document.getElementById("truck4y");
                 truck4x.innerHTML = truck4Data.x;
                 truck4y.innerHTML = truck4Data.y;
+                drawPoint(truck4Data.x,truck4Data.y,"yellow");
             };
         }
         else{
@@ -120,3 +131,26 @@
             socket4.close();
         }
     });
+
+
+
+
+function drawPoint(x,y,color){
+    streamCtx.beginPath();                      // Start a new path
+    streamCtx.arc(-8.26*y+820,-8.1*x+702, 4, 0, 2 * Math.PI);     // Draw a circle of radius 5
+    streamCtx.fillStyle = color;                // Set fill color to blue
+    streamCtx.fill();                           // Fill the path
+    // Schedule clearing the point after the specified duration
+    setTimeout(function () {
+        clearPoint();
+    }, 15000);
+}
+
+// Function to clear the point
+function clearPoint() {
+    var static = new Image();
+    static.src = "/map.jpeg";
+    static.onload = function() {
+        streamCtx.drawImage(static, 0, 0);
+    };
+}
