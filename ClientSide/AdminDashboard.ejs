@@ -14,31 +14,21 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-success py-4">
         <div class="container-fluid">
             <ul class="navbar-nav mx-auto">
+                <% for (let i = 1; i <= 4; i++) { %>
+                    <li class="nav-item">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="Truck_<%= i %>_info">
+                        <label class="custom-control-label" for="Truck_<%= i %>_info">&nbsp; Truck <%= i %> &nbsp;</label>
+                      </div>
+                    </li>
+                  <% } %>
                 <li class="nav-item">
                     <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="Truck_1_info">
-                        <label class="custom-control-label" for="Truck_1_info">&nbsp; Truck 1 &nbsp;</label>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="Truck_2_info">
-                        <label class="custom-control-label" for="Truck_2_info">&nbsp; Truck 2 &nbsp;</label>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="Truck_3_info">
-                        <label class="custom-control-label" for="Truck_3_info">&nbsp; Truck 3 &nbsp;</label>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="Truck_4_info">
-                        <label class="custom-control-label" for="Truck_4_info">&nbsp; Truck 4 &nbsp;</label>
+                        <input type="checkbox" class="custom-control-input" id="tracks">
+                        <label class="custom-control-label" for="tracks">Show Tracks</label>
                     </div>
                 </li>
             </ul>
@@ -46,8 +36,7 @@
     </nav>
     <div class="container-fluid">
         <div class="row">
-            <br>
-            <div id="dashboard-container" class="col-9 my-3">
+            <div id="dashboard-container" class="col-9 my-3 d-flex align-items-center justify-content-center">
                 <canvas id="canvas" width="1040px"  height="737px" style="width: 1040px; height: 737px;"></canvas>
             </div>
             <div class="col-3">
@@ -57,39 +46,30 @@
                     <div class="card-body">
                         <!-- Vertical list for truck details -->
                         <div class="list-group">
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <h5>Truck 1</h5>
-                                <p>Current Position:</p> 
-                                <span>x:</span><span id="truck1x"></span><br>
-                                <span>y:</span><span id="truck1y"></span><br>
-                                <!-- <p>Fuel: 80%</p> -->
-                                <!-- <p>Remaining Capacity: 1200 lbs</p> -->
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <h5>Truck 2</h5>
-                                <p>Current Position:</p> 
-                                <span>x:</span><span id="truck2x"></span><br>
-                                <span>y:</span><span id="truck2y"></span><br>
-                                <!-- <p>Fuel: 70%</p> -->
-                                <!-- <p>Remaining Capacity: 1000 lbs</p> -->
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <h5>Truck 3</h5>
-                                <p>Current Position:</p> 
-                                <span>x:</span><span id="truck3x"></span><br>
-                                <span>y:</span><span id="truck3y"></span><br>
-                                <!-- <p>Fuel: 90%</p> -->
-                                <!-- <p>Remaining Capacity: 1500 lbs</p> -->
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <h5>Truck 4</h5>
-                                <p>Current Position:</p> 
-                                <span>x:</span><span id="truck4x"></span><br>
-                                <span>y:</span><span id="truck4y"></span><br>
-                                <!-- <p>Fuel: 90%</p> -->
-                                <!-- <p>Remaining Capacity: 1500 lbs</p> -->
-                            </a>
-                            <!-- Add more truck details as needed -->
+
+                            <% for (let i = 1; i <= 4; i++) { %>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                  <div class="card">
+                                    <div class="card-header text-center">
+                                      <h5>Truck <%= i %></h5>
+                                    </div>
+                                    <div class="card-body">
+                                      <p>Current Position:</p>
+                                      <span>x:</span><span id="truck<%= i %>x"></span><br>
+                                      <span>y:</span><span id="truck<%= i %>y"></span><br>
+                                      <span>Color :</span>
+                                      <div style="display: inline-block; width: 20px; height: 20px; background-color: <%= getColor(i) %>;"></div>
+                                    </div>
+                                  </div>
+                                </a>
+                              <% } %>
+                              <!-- function that returns truck display color to show on pannel -->
+                              <% function getColor(truckNumber) {
+                                // Define colors based on truckNumber or use any logic to determine colors dynamically
+                                const colors = ['red', 'blue', 'green', 'yellow'];
+                                return colors[truckNumber - 1];
+                              } %>
+
                         </div>
                     </div>
                 </div>
@@ -99,3 +79,4 @@
 </body>
 </html>
 <script src="/Scripts/AdminDashboard.js"></script>
+<script src="/Scripts/track.js"></script>

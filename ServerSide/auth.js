@@ -1,6 +1,5 @@
 module.exports = (app,path) => {
 
-    
     const {validateCustomerCredentials,validateAdminCredentials} = require("./Middlewares.js")
 
     app.post("/AdminLogin",validateAdminCredentials, (req, res) => {

@@ -4,8 +4,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Dashboard</title>
+    <script>
+        function selectHouse(name) {
+            alert(name);
+            console.log(name);
+          }
+    </script>
 </head>
+
+<%- include('./ReusableComponents/BootstrapCDN.ejs') %>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-success py-4">
+        <div class="container-fluid">
+            <h5>ORDER</h1>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <div id="dashboard-container" class="col-9 my-3 d-flex align-items-center justify-content-center">
+                <svg class="my-3" width="1040" height="737" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+                    <!-- Image Layer -->
+                    <g id="imageLayer">
+                        <title>Background Image</title>
+                        <image cy="568.5" cx="173.66667" ry="213.66667" rx="45" xlink:href="/map.png" height="737" width="1040"/>
+                    </g>
+            
+                    <g id="ellipseLayer">
+                        <title>Ellipse Layer</title>
+                        <ellipse ry="8.46154" rx="8.46154" id="house1" cy="298.82956" cx="320.71376" stroke="#000" fill="#ffffff" onclick="selectHouse('house1')"/>
+                        <ellipse ry="8.46154" rx="8.46154" id="house2" cy="148.27401" cx="341.82487" stroke="#000" fill="#ffffff" onclick="selectHouse('house2')" />
+                        <ellipse ry="8.46154" rx="8.46154" id="house3" cy="393.82955" cx="72.38044" stroke="#000" fill="#ffffff" onclick="selectHouse('house2')" />
+                        <ellipse ry="8.46154" rx="8.46154" id="house1" cy="641.05179" cx="356.26932" stroke="#000" fill="#ffffff" onclick="selectHouse('house2')" />
+                        <ellipse ry="8.46154" rx="8.46154" id="house1" cy="541.05178" cx="784.04711" stroke="#000" fill="#ffffff" onclick="selectHouse('house2')" />
+                        <ellipse ry="8.46154" rx="8.46154" id="house1" cy="449.94067" cx="745.15822" stroke="#000" fill="#ffffff" onclick="selectHouse('house2')" />
+                        <ellipse ry="8.46154" rx="8.46154" id="house1" cy="325.49623" cx="645.15822" stroke="#000" fill="#ffffff" onclick="selectHouse('house2')" />
+                        <ellipse ry="8.46154" rx="8.46154" id="house1" cy="247.71845" cx="955.15822" stroke="#000" fill="#ffffff" onclick="selectHouse('house2')" />
+                    </g>
+
+                    <g id="RedTrack">
+                        <title>RedTrack Layer</title>
+                        <image cy="568.5" cx="173.66667" ry="213.66667" rx="45" xlink:href="/Tracks/RedTrack.png" id="redTrack" height="737" width="1040"/>
+                    </g>
+                    
+                    <g id="BlueTrack">
+                        <title>BlueTrack Layer</title>
+                        <image cy="568.5" cx="173.66667" ry="213.66667" rx="45" xlink:href="/Tracks/BlueTrack.png" id="blueTrack" height="737" width="1040"/>
+                    </g>
+
+                    <g id="GreenTrack">
+                        <title>GreenTrack Layer</title>
+                        <image cy="568.5" cx="173.66667" ry="213.66667" rx="45" xlink:href="/Tracks/GreenTrack.png" id="greenTrack" height="737" width="1040"/>
+                    </g>
+
+                    <g id="YellowTrack">
+                        <title>YellowTrack Layer</title>
+                        <image cy="568.5" cx="173.66667" ry="213.66667" rx="45" xlink:href="/Tracks/YellowTrack.png" id="yellowTrack" height="737" width="1040"/>
+                    </g>
+
+                </svg>
+            </div>
+            <div class="col-3">
+                <!-- Bootstrap card for the vertical list -->
+                <div class="card my-3">
+                    <div class="card-header text-center">Place Order</div>
+                    <div class="card-body text-center">
+                        <span>Selected House : </span><span>No House selected</span>
+                        <br>
+                        <br>
+                        <button class="btn btn-info">Show Trucks on this Path</button>                       
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
     
 </body>
 </html>
