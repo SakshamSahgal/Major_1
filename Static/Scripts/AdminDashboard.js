@@ -1,181 +1,63 @@
-    var backgroundImgSrc = "/map.png";
-    
-    truck1Btn = document.getElementById("Truck_1_info");
-    truck2Btn = document.getElementById("Truck_2_info");
-    truck3Btn = document.getElementById("Truck_3_info");
-    truck4Btn = document.getElementById("Truck_4_info");
-    streamCanvas = document.getElementById("canvas");
-    streamCtx = streamCanvas.getContext("2d");
-    
-    var static = new Image();
-    static.src = backgroundImgSrc;
-    static.onload = function() {
-        streamCtx.drawImage(static, 0, 0);
-    };
+var socket1; // Variable for the WebSocket connection for Truck 1
+var socket2; // Variable for the WebSocket connection for Truck 2
+var socket3; // Variable for the WebSocket connection for Truck 3
+var socket4; // Variable for the WebSocket connection for Truck 4
 
-    var socket1; // Variable for the WebSocket connection for Truck 1
-    var socket2; // Variable for the WebSocket connection for Truck 2
-    var socket3; // Variable for the WebSocket connection for Truck 3
-    var socket4; // Variable for the WebSocket connection for Truck 4
-    var socket5; // Variable for the WebSocket connection for Camera
+function initializeTruckSocket(id, color, socket) {
 
-    truck1Btn.addEventListener("change", function(){
-        if(truck1Btn.checked){
-            console.log("Truck 1 checked");
-            socket1 = new WebSocket(`ws://localhost:3000/truck1`);
+    let truckBtn = document.getElementById(`Truck_${id}_info`);
+    let truckX = document.getElementById(`truck${id}x`);
+    let truckY = document.getElementById(`truck${id}y`);
+    let truckPointer = document.getElementById(`Truck${id}Pointer`);
 
-            let truck1x = document.getElementById("truck1x");
-            let truck1y = document.getElementById("truck1y");
-            
-            socket1.onopen = () => {
-                console.log('Truck1 WebSocket connection established.');
-                truck1x.innerHTML = "Loading...";
-                truck1y.innerHTML = "Loading...";
+
+    truckBtn.addEventListener("change", function () {
+        if (truckBtn.checked) {
+            // console.log(`truck${id} socket checked`);
+            socket = new WebSocket(`ws://localhost:3000/truck${id}`);
+            socket.onopen = () => {
+                console.log(`truck${id} WebSocket connection established.`);
+                truckX.innerHTML = "Loading...";
+                truckY.innerHTML = "Loading...";
             };
-    
-            socket1.onclose = () => {
-                console.log('WebSocket truck 1 connection closed.');
+
+            socket.onmessage = (event) => {
+                console.log(`Received truck${id} data`, JSON.parse(event.data));
+                truckPointer.setAttribute("visibility", "visible");
+
+                let truckData = JSON.parse(event.data);
+                truckX.innerHTML = truckData.x;
+                truckY.innerHTML = truckData.y;
+                drawPoint(`Truck${id}Pointer`, truckData.x, truckData.y, color);
             };
-    
-            socket1.onmessage = (event) => {
-                console.log("Received truck1 data", JSON.parse(event.data));
-                let truck1Data = JSON.parse(event.data);
-                truck1x.innerHTML = truck1Data.x;
-                truck1y.innerHTML = truck1Data.y;
-                drawPoint(truck1Data.x,truck1Data.y,"red");
+
+            socket.onclose = () => {
+                console.log(`truck${id} WebSocket connection closed.`);
+                truckX.innerHTML = "No Data";
+                truckY.innerHTML = "No Data";
+                truckPointer.setAttribute("visibility", "hidden");
             };
-        }
-        else{
-            console.log("Truck 1 button unchecked");
-            socket1.close();
+
+        } else {
+            // console.log(`truck${id} socket unchecked`);
+            socket.close();
         }
     });
-
-    truck2Btn.addEventListener("change", function(){
-        if(truck2Btn.checked){
-            console.log("Truck 2 checked");
-            socket2 = new WebSocket(`ws://localhost:3000/truck2`);
-            
-            let truck2x = document.getElementById("truck2x");
-            let truck2y = document.getElementById("truck2y");
-
-            socket2.onopen = () => {
-                console.log('Truck2 WebSocket connection established.');
-                truck2x.innerHTML = "Loading...";
-                truck2y.innerHTML = "Loading...";
-            };
-    
-            socket2.onclose = () => {
-                console.log('WebSocket truck 2 connection closed.');
-            };
-    
-            socket2.onmessage = (event) => {
-                console.log("Received truck2 data", JSON.parse(event.data));
-                let truck2Data = JSON.parse(event.data);
-                truck2x.innerHTML = truck2Data.x;
-                truck2y.innerHTML = truck2Data.y;
-                drawPoint(truck2Data.x,truck2Data.y,"blue");
-            };
-        }
-        else{
-            console.log("Truck 2 button unchecked");
-            socket2.close();
-        }
-    });
-    
-    truck3Btn.addEventListener("change", function(){
-        if(truck3Btn.checked){
-            console.log("Truck 3 checked");
-            socket3 = new WebSocket(`ws://localhost:3000/truck3`);
-            
-            let truck3x = document.getElementById("truck3x");
-            let truck3y = document.getElementById("truck3y");
-
-            socket3.onopen = () => {
-                console.log('Truck3 WebSocket connection established.');
-                truck3x.innerHTML = "Loading...";
-                truck3y.innerHTML = "Loading...";
-            };
-    
-            socket3.onclose = () => {
-                console.log('WebSocket truck 3 connection closed.');
-            };
-    
-            socket3.onmessage = (event) => {
-                console.log("Received truck3 data", JSON.parse(event.data));
-                let truck3Data = JSON.parse(event.data);
-                truck3x.innerHTML = truck3Data.x;
-                truck3y.innerHTML = truck3Data.y;
-                drawPoint(truck3Data.x,truck3Data.y,"green");
-            };
-        }
-        else{
-            console.log("Truck 3 button unchecked");
-            socket3.close();
-        }
-    });
-
-    truck4Btn.addEventListener("change", function(){
-        if(truck4Btn.checked){
-            console.log("Truck 4 checked");
-            socket4 = new WebSocket(`ws://localhost:3000/truck4`);
-            
-            let truck4x = document.getElementById("truck4x");
-            let truck4y = document.getElementById("truck4y");
-
-            socket4.onopen = () => {
-                console.log('Truck4 WebSocket connection established.');
-                truck4x.innerHTML = "Loading...";
-                truck4y.innerHTML = "Loading...";
-            };
-    
-            socket4.onclose = () => {
-                console.log('WebSocket truck 4 connection closed.');
-            };
-    
-            socket4.onmessage = (event) => {
-                console.log("Received truck4 data", JSON.parse(event.data));
-                let truck4Data = JSON.parse(event.data);
-                truck4x.innerHTML = truck4Data.x;
-                truck4y.innerHTML = truck4Data.y;
-                drawPoint(truck4Data.x,truck4Data.y,"yellow");
-            };
-        }
-        else{
-            console.log("Truck 4 button unchecked");
-            socket4.close();
-        }
-    });
-
-
-
-
-function drawPoint(x,y,color){
-    streamCtx.beginPath();                      // Start a new path
-    X = -8.25*y+818;
-    Y = -8.1*x+702
-    streamCtx.arc(X,Y, 4, 0, 2 * Math.PI);     // Draw a circle of radius 5
-    streamCtx.fillStyle = color;                // Set fill color to blue
-    streamCtx.fill();                           // Fill the path
-
-    // Add white outline
-    streamCtx.strokeStyle = 'white';           // Set the outline color to white
-    streamCtx.lineWidth = 2;                   // Set the outline width
-
-    streamCtx.stroke();                        // Draw the outline
-
-    // Schedule clearing the point after the specified duration
-    setTimeout(function () {
-        RedrawBackground();
-    }, 15000);
 }
 
-// Function to clear the point
-function RedrawBackground() {
-    var static = new Image();
-    static.src = backgroundImgSrc;
-    static.onload = function() {
-        streamCtx.drawImage(static, 0, 0);
-    };
-}
+initializeTruckSocket(1, "red", socket1);
+initializeTruckSocket(2, "blue", socket2);
+initializeTruckSocket(3, "green", socket3);
+initializeTruckSocket(4, "yellow", socket4);
 
+
+function drawPoint(id, x, y, color) {
+
+    X = -8.25 * y + 818;
+    Y = -8.1 * x + 702
+
+    console.log("X: " + X + " Y: " + Y);
+    document.getElementById(id).setAttribute("cx", X);
+    document.getElementById(id).setAttribute("cy", Y);
+
+}

@@ -1,22 +1,28 @@
+RedTrack = document.getElementById("RedTrack");
+BlueTrack = document.getElementById("BlueTrack");
+GreenTrack = document.getElementById("GreenTrack");
+YellowTrack = document.getElementById("YellowTrack");
+AllTracks = document.getElementById("AllTracks");
 
-track1 = document.getElementById("tracks");
+Tracks = [RedTrack, BlueTrack, GreenTrack, YellowTrack];
 
-function showRedTrack(){
-    // Draw a rectangle
-    streamCtx.fillStyle = '#FF0000'; // Set fill color to red
-    streamCtx.fillRect(50, 50, 100, 80); // (x, y, width, height)
+AllTracks.addEventListener("change",function () { 
+  console.log("AllTracks");
+  if (AllTracks.checked) {
+     for (let i = 0; i < Tracks.length; i++) {
+       Tracks[i].setAttribute("visibility", "visible");
+     }
+  } else {
+    for (let i = 0; i < Tracks.length; i++) {
+       Tracks[i].setAttribute("visibility", "hidden");
+     }
+  }
+ });
+
+ function showThisTrack(trackID) {
+    console.log("TrackID: " + trackID);
+    if(document.getElementById("ShowTrack" + trackID).checked)
+    Tracks[trackID - 1].setAttribute("visibility", "visible");
+  else
+    Tracks[trackID - 1].setAttribute("visibility", "hidden");
 }
-
-track1.addEventListener("change", function(){
-    if(track1.checked){
-        console.log("Track 1 checked");
-        backgroundImgSrc = "/tracksMap.png";
-        RedrawBackground();
-    }
-    else
-    {
-        console.log("Track 1 button unchecked");
-        backgroundImgSrc = "/map.png";
-        RedrawBackground();
-    }
-})

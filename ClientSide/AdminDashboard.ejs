@@ -27,8 +27,8 @@
                   <% } %>
                 <li class="nav-item">
                     <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="tracks">
-                        <label class="custom-control-label" for="tracks">Show Tracks</label>
+                        <input type="checkbox" class="custom-control-input" id="AllTracks">
+                        <label class="custom-control-label" for="AllTracks">Show All Tracks</label>
                     </div>
                 </li>
             </ul>
@@ -37,7 +37,56 @@
     <div class="container-fluid">
         <div class="row">
             <div id="dashboard-container" class="col-9 my-3 d-flex align-items-center justify-content-center">
-                <canvas id="canvas" width="1040px"  height="737px" style="width: 1040px; height: 737px;"></canvas>
+                <!-- <canvas id="canvas" width="1040px"  height="737px" style="width: 1040px; height: 737px;"></canvas> -->
+                <svg class="my-3" width="1040" height="737">
+                  <!-- Image Layer -->
+                  <g id="imageLayer">
+                    <title>Background Image</title>
+                    <image xlink:href="/map.png" height="737" width="1040"/>
+                  </g>
+                  
+                  <g id="RedTrack" visibility="hidden">
+                    <title>RedTrack Layer</title>
+                    <image cy="568.5" cx="173.66667" ry="213.66667" rx="45" xlink:href="/Tracks/RedTrack.png" id="redTrack" height="737" width="1040"/>
+                  </g>
+                
+                  <g id="BlueTrack" visibility="hidden">
+                      <title>BlueTrack Layer</title>
+                      <image cy="568.5" cx="173.66667" ry="213.66667" rx="45" xlink:href="/Tracks/BlueTrack.png" id="blueTrack" height="737" width="1040"/>
+                  </g>
+
+                  <g id="GreenTrack" visibility="hidden">
+                      <title>GreenTrack Layer</title>
+                      <image cy="568.5" cx="173.66667" ry="213.66667" rx="45" xlink:href="/Tracks/GreenTrack.png" id="greenTrack" height="737" width="1040"/>
+                  </g>
+
+                  <g id="YellowTrack" visibility="hidden">
+                      <title>YellowTrack Layer</title>
+                      <image cy="568.5" cx="173.66667" ry="213.66667" rx="45" xlink:href="/Tracks/YellowTrack.png" id="yellowTrack" height="737" width="1040"/>
+                  </g>
+
+                  <g id="Truck1">
+                      <title>Truck 1 Point</title>
+                      <circle cx="0" cy="0" r="4" fill="red" id="Truck1Pointer" visibility="hidden" />
+                  </g>
+
+                  <g id="Truck2">
+                      <title>Truck 2 Point</title>
+                      <circle cx="0" cy="0" r="4" fill="blue" id="Truck2Pointer" visibility="hidden" />
+                  </g>
+
+                  <g id="Truck3">
+                      <title>Truck 3 Point</title>
+                      <circle cx="0" cy="0" r="4" fill="green" id="Truck3Pointer" visibility="hidden" />
+                  </g>
+
+                  <g id="Truck4">
+                      <title>Truck 4 Point</title>
+                      <circle cx="0" cy="0" r="4" fill="yellow" id="Truck4Pointer" visibility="hidden" />
+                  </g>
+
+                </svg>
+
             </div>
             <div class="col-3">
                 <!-- Bootstrap card for the vertical list -->
@@ -52,11 +101,15 @@
                                   <div class="card">
                                     <div class="card-header text-center">
                                       <h5>Truck <%= i %></h5>
+                                        <div class="custom-control custom-switch">
+                                          <input type="checkbox" class="custom-control-input" id="ShowTrack<%= i %>"  onchange="showThisTrack('<%= i %>')">
+                                          <label class="custom-control-label" for="ShowTrack<%= i %>" >Show Track <%= i %></label>
+                                        </div>
                                     </div>
                                     <div class="card-body">
                                       <p>Current Position:</p>
-                                      <span>x:</span><span id="truck<%= i %>x"></span><br>
-                                      <span>y:</span><span id="truck<%= i %>y"></span><br>
+                                      <span>x:</span><span id="truck<%= i %>x">No Data</span><br>
+                                      <span>y:</span><span id="truck<%= i %>y">No Data</span><br>
                                       <span>Color :</span>
                                       <div style="display: inline-block; width: 20px; height: 20px; background-color: <%= getColor(i) %>;"></div>
                                     </div>
