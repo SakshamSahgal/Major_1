@@ -59,6 +59,26 @@
                         <image cy="568.5" cx="173.66667" ry="213.66667" rx="45" xlink:href="/Tracks/YellowTrack.png" height="737" width="1040"/>
                     </g>
 
+                    <g id="Truck1">
+                        <title>Truck 1 Point</title>
+                        <circle cx="0" cy="0" r="6" fill="red" id="Truck1Pointer" visibility="hidden" />
+                    </g>
+  
+                    <g id="Truck2">
+                        <title>Truck 2 Point</title>
+                        <circle cx="0" cy="0" r="6" fill="blue" id="Truck2Pointer" visibility="hidden" />
+                    </g>
+  
+                    <g id="Truck3">
+                        <title>Truck 3 Point</title>
+                        <circle cx="0" cy="0" r="6" fill="green" id="Truck3Pointer" visibility="hidden" />
+                    </g>
+  
+                    <g id="Truck4">
+                        <title>Truck 4 Point</title>
+                        <circle cx="0" cy="0" r="6" fill="yellow" id="Truck4Pointer" visibility="hidden" />
+                    </g>
+
                     <g id="ellipseLayer">
                         <title>Ellipse Layer</title>
                         <ellipse ry="8.46154" rx="8.46154" id="house1" cy="298.82956" cx="320.71376" stroke="#000" fill="#ffffff" onclick="selectHouse('house1')"/>
@@ -109,7 +129,7 @@
     document.getElementById("SelectHouse").addEventListener("click", function() {
 
         hideTracks();
-
+        hideTruckPointers();
 
         if(selectedHouse == null) {
             alert("Please select a house first!");
@@ -134,7 +154,10 @@
                     document.getElementById(tracksThroughIt[i] + "Track").setAttribute("visibility","visible");
                 }
 
+                //displaying the list of tracks through it
                 tracksThroughItHTML.innerHTML = tracksString;
+                //revealing the truck pointers that are on the visible tracks
+                showTruckPointer(tracksThroughIt);
 
            }).catch(function(error) {
                console.log(error);
@@ -154,6 +177,81 @@
         document.getElementById("blueTrack").setAttribute("visibility","hidden");
         document.getElementById("greenTrack").setAttribute("visibility","hidden");
         document.getElementById("yellowTrack").setAttribute("visibility","hidden");
+    }
+
+    function hideTruckPointers(){
+        document.getElementById("Truck1Pointer").setAttribute("visibility","hidden");
+        document.getElementById("Truck2Pointer").setAttribute("visibility","hidden");
+        document.getElementById("Truck3Pointer").setAttribute("visibility","hidden");
+        document.getElementById("Truck4Pointer").setAttribute("visibility","hidden");
+    }
+
+    function showTruckPointer(colors){
+
+        for (let i = 0; i < colors.length; i++) {
+            if(colors[i] == "red")
+                document.getElementById("Truck1Pointer").setAttribute("visibility","visible");
+            else if(colors[i] == "blue")
+                document.getElementById("Truck2Pointer").setAttribute("visibility","visible");
+            else if(colors[i] == "green")
+                document.getElementById("Truck3Pointer").setAttribute("visibility","visible");
+            else if(colors[i] == "yellow")
+                document.getElementById("Truck4Pointer").setAttribute("visibility","visible");
+        }
+
+        
+    }
+
+
+    function initializeTruckSocket(id, color, socket) {
+
+        let truckPointer = document.getElementById(`Truck${id}Pointer`);
+
+        socket = new WebSocket(`ws://localhost:3000/truck${id}`);
+        socket.onopen = () => {
+            console.log(`truck${id} WebSocket connection established.`);
+        };
+
+        socket.onmessage = (event) => {
+            console.log(`Received truck${id} data`, JSON.parse(event.data));
+            // truckPointer.setAttribute("visibility", "visible");
+
+            let truckData = JSON.parse(event.data);
+            // truckX.innerHTML = truckData.x;
+            // truckY.innerHTML = truckData.y;
+            drawPoint(`Truck${id}Pointer`, truckData.x, truckData.y, color);
+        };
+
+        socket.onclose = () => {
+            console.log(`truck${id} WebSocket connection closed.`);
+            truckX.innerHTML = "No Data";
+            truckY.innerHTML = "No Data";
+            truckPointer.setAttribute("visibility", "hidden");
+        };
+
+    }
+
+    var socket1; // Variable for the WebSocket connection for Truck 1
+    var socket2; // Variable for the WebSocket connection for Truck 2
+    var socket3; // Variable for the WebSocket connection for Truck 3
+    var socket4; // Variable for the WebSocket connection for Truck 4
+
+
+    initializeTruckSocket(1, "red", socket1);
+    initializeTruckSocket(2, "blue", socket2);
+    initializeTruckSocket(3, "green", socket3);
+    initializeTruckSocket(4, "yellow", socket4);
+
+
+    function drawPoint(id, x, y, color) {
+
+        X = -8.25 * y + 818;
+        Y = -8.1 * x + 702
+
+        console.log("X: " + X + " Y: " + Y);
+        document.getElementById(id).setAttribute("cx", X);
+        document.getElementById(id).setAttribute("cy", Y);
+
     }
 
 </script>
