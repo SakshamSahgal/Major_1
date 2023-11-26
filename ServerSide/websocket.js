@@ -9,7 +9,7 @@ module.exports = (app) => {
     const topic2 = '/fleet1/dolly2/';
     const topic3 = '/fleet2/dolly3/';
     const topic4 = '/fleet2/dolly4/';
-
+    const CameraTopic1 = '/fleet1/dolly1/camera1/';
 
     const createWebSocket = (ws, topic) => {
         console.log(`${topic} WebSocket connection opened`);
@@ -51,5 +51,9 @@ module.exports = (app) => {
 
     app.ws('/truck4', (ws, req) => {
         createWebSocket(ws, topic4);
+    });
+
+    app.ws('/camera1', (ws, req) => {
+        createWebSocket(ws, CameraTopic1);
     });
 };

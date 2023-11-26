@@ -14,6 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 
 require("./auth.js")(app,path);
 require("./websocket.js")(app);
+require("./Tracks.js")(app)
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000')

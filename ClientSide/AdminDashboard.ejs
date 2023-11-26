@@ -67,22 +67,22 @@
 
                   <g id="Truck1">
                       <title>Truck 1 Point</title>
-                      <circle cx="0" cy="0" r="4" fill="red" id="Truck1Pointer" visibility="hidden" />
+                      <circle cx="0" cy="0" r="6" fill="red" id="Truck1Pointer" visibility="hidden" />
                   </g>
 
                   <g id="Truck2">
                       <title>Truck 2 Point</title>
-                      <circle cx="0" cy="0" r="4" fill="blue" id="Truck2Pointer" visibility="hidden" />
+                      <circle cx="0" cy="0" r="6" fill="blue" id="Truck2Pointer" visibility="hidden" />
                   </g>
 
                   <g id="Truck3">
                       <title>Truck 3 Point</title>
-                      <circle cx="0" cy="0" r="4" fill="green" id="Truck3Pointer" visibility="hidden" />
+                      <circle cx="0" cy="0" r="6" fill="green" id="Truck3Pointer" visibility="hidden" />
                   </g>
 
                   <g id="Truck4">
                       <title>Truck 4 Point</title>
-                      <circle cx="0" cy="0" r="4" fill="yellow" id="Truck4Pointer" visibility="hidden" />
+                      <circle cx="0" cy="0" r="6" fill="yellow" id="Truck4Pointer" visibility="hidden" />
                   </g>
 
                 </svg>
@@ -91,7 +91,7 @@
             <div class="col-3">
                 <!-- Bootstrap card for the vertical list -->
                 <div class="card">
-                    <div class="card-header">Truck Details</div>
+                    <div class="card-header text-center"><h5>Truck Details</h5></div>
                     <div class="card-body">
                         <!-- Vertical list for truck details -->
                         <div class="list-group">
@@ -112,10 +112,46 @@
                                       <span>y:</span><span id="truck<%= i %>y">No Data</span><br>
                                       <span>Color :</span>
                                       <div style="display: inline-block; width: 20px; height: 20px; background-color: <%= getColor(i) %>;"></div>
+                                      
+                                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#showTruck<%= i %>camera">
+                                        Live View
+                                      </button>
+
                                     </div>
                                   </div>
                                 </a>
                               <% } %>
+
+                              <% for (let i = 1; i <= 4; i++) { %>
+                                  <!-- The Modal -->
+                                  <div class="modal" id="showTruck<%= i %>camera">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                            
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Truck <%= i %> Camera</h4>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+                            
+                                            <!-- Modal Body -->
+                                            <div class="modal-body">
+                                                
+
+                                              <image id="Truck1Camera" src=""/>
+
+
+                                            </div>
+                            
+                                            <!-- Modal Footer -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                            
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
                               <!-- function that returns truck display color to show on pannel -->
                               <% function getColor(truckNumber) {
                                 // Define colors based on truckNumber or use any logic to determine colors dynamically
@@ -133,3 +169,4 @@
 </html>
 <script src="/Scripts/AdminDashboard.js"></script>
 <script src="/Scripts/track.js"></script>
+<script src="/Scripts/Camera.js"></script>
