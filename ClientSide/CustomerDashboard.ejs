@@ -104,7 +104,7 @@
                         <button class="btn btn-info" id="SelectHouse">Select House</button>                       
                     </div>
                 </div>
-                <div class="card my-3">
+                <div class="card my-3" id="TracksPallet" hidden>
                     <div class="card-header text-center">Tracks Through This</div>
                     
                     <div class="card-body text-center">
@@ -114,13 +114,13 @@
                                         
                     </div>
                 </div>
-                <div class="card my-3">
+                <div class="card my-3" id="OrderPallet" hidden>
                     <div class="card-header text-center">Order</div>
                     <div class="card-body text-center">
                         <button class="btn btn-primary" onclick="calculateNearestTruck()">Place Order</button>              
                     </div>
                 </div>
-                <div class="card my-3">
+                <div class="card my-3"  id="nearestTruckPallet" hidden>
                     <div class="card-header text-center">Nearest Truck Assigned</div>
                     <div class="card-body text-center">
                         <span id="nearestTruck"> Not Yet Assigned</span>
@@ -139,10 +139,13 @@
 
     // This is the function that will be called when the user clicks on the select house button
     
+    let selectedTrucks = []
+
     document.getElementById("SelectHouse").addEventListener("click", function() {
 
         hideTracks();
         hideTruckPointers();
+        
 
         if(selectedHouse == null) {
             alert("Please select a house first!");
@@ -151,6 +154,10 @@
         else {
             // Redirecting to the order page
 
+            //reveal the order pallet
+            document.getElementById("OrderPallet").hidden = false;
+            document.getElementById("nearestTruckPallet").hidden = false;
+            document.getElementById("TracksPallet").hidden = false;
 
             // Getting the tracks through it from the server
            axios.get("/Tracks/" + selectedHouse).then(function(response) {
@@ -162,16 +169,20 @@
                 let tracksThroughItHTML =   document.getElementById("tracksThroughIt"); 
                 tracksThroughItHTML.innerHTML = "";
                 let tracksString = "";
+                selectedTrucks = [];
                 for (let i = 0; i < tracksThroughIt.length; i++) {
                     console.log(tracksThroughIt[i]);       
-                    tracksString += `<li class="list-group-item">${tracksThroughIt[i]} ${getColor(tracksThroughIt[i])} </li>`
+                    tracksString += `<li class="list-group-item">${tracksThroughIt[i]} ${getColor(tracksThroughIt[i])}  (Truck ${getTruckFromColor(tracksThroughIt[i])} )</li>`
                     document.getElementById(tracksThroughIt[i] + "Track").setAttribute("visibility","visible");
+                    
+                    selectedTrucks.push(getTruckFromColor(tracksThroughIt[i]))
                 }
 
                 //displaying the list of tracks through it
                 tracksThroughItHTML.innerHTML = tracksString;
                 //revealing the truck pointers that are on the visible tracks
                 showTruckPointer(tracksThroughIt);
+                console.log(selectedTrucks);
 
            }).catch(function(error) {
                console.log(error);
@@ -184,6 +195,13 @@
         else if(track == "blue") return `🟦`;
         else if(track == "green") return `🟩`;
         else if(track == "yellow") return `🟨`;
+    }
+
+    function getTruckFromColor(color){
+        if(color == "red") return 1;
+        else if(color == "blue") return 2;
+        else if(color == "green") return 3;
+        else if(color == "yellow") return 4;
     }
 
     function hideTracks() {
@@ -328,23 +346,32 @@ var truckCoordinates = {
 
     function calculateNearestTruck(){
         console.log(houseCoordinates[selectedHouse])
-        let dist1 = Math.abs(houseCoordinates[selectedHouse].x - truckCoordinates[1].x) + Math.abs(houseCoordinates[selectedHouse].y - truckCoordinates[1].y); 
-        let dist2 = Math.abs(houseCoordinates[selectedHouse].x - truckCoordinates[2].x) + Math.abs(houseCoordinates[selectedHouse].y - truckCoordinates[2].y); 
-        let dist3 = Math.abs(houseCoordinates[selectedHouse].x - truckCoordinates[3].x) + Math.abs(houseCoordinates[selectedHouse].y - truckCoordinates[3].y); 
-        let dist4 = Math.abs(houseCoordinates[selectedHouse].x - truckCoordinates[4].x) + Math.abs(houseCoordinates[selectedHouse].y - truckCoordinates[4].y); 
-        //find the minimum distance and return the truck number
-        let min = Math.min(dist1, dist2, dist3, dist4);
-        if(min == dist1) {
-            document.getElementById("nearestTruck").innerHTML = "Truck 1 🟥";
+        let dist = {
+            1 : Math.abs(houseCoordinates[selectedHouse].x - truckCoordinates[1].x) + Math.abs(houseCoordinates[selectedHouse].y - truckCoordinates[1].y),
+            2 : Math.abs(houseCoordinates[selectedHouse].x - truckCoordinates[2].x) + Math.abs(houseCoordinates[selectedHouse].y - truckCoordinates[2].y),    
+            3 : Math.abs(houseCoordinates[selectedHouse].x - truckCoordinates[3].x) + Math.abs(houseCoordinates[selectedHouse].y - truckCoordinates[3].y),
+            4 : Math.abs(houseCoordinates[selectedHouse].x - truckCoordinates[4].x) + Math.abs(houseCoordinates[selectedHouse].y - truckCoordinates[4].y)
         }
-        else if(min == dist2) {
-            document.getElementById("nearestTruck").innerHTML = "Truck 2 🟦";
+        
+        console.log(dist);
+
+        let min = 100000000;
+
+        for(let i=0;i<selectedTrucks.length;i++){
+
+            min = Math.min(min,dist[selectedTrucks[i]]);
+
+            // if(dist[selectedTrucks[i]] == Math.min(dist[1],dist[2],dist[3],dist[4])){
+            //     document.getElementById("nearestTruck").innerHTML = "Truck " + selectedTrucks[i];
+            //     break;
+            // }
         }
-        else if(min == dist3) {
-            document.getElementById("nearestTruck").innerHTML = "Truck 3 🟩";
-        }
-        else if(min == dist4) {
-            document.getElementById("nearestTruck").innerHTML = "Truck 4 🟨";
+
+        for(let i=0;i<selectedTrucks.length;i++){
+            if(dist[selectedTrucks[i]] == min){
+                document.getElementById("nearestTruck").innerHTML = "Truck " + selectedTrucks[i];
+                break;
+            }
         }
     }
 
