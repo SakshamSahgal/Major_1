@@ -106,11 +106,24 @@
                 </div>
                 <div class="card my-3">
                     <div class="card-header text-center">Tracks Through This</div>
+                    
                     <div class="card-body text-center">
                         
                         <ul class="list-group" id="tracksThroughIt">
                         </ul>
                                         
+                    </div>
+                </div>
+                <div class="card my-3">
+                    <div class="card-header text-center">Order</div>
+                    <div class="card-body text-center">
+                        <button class="btn btn-primary" onclick="calculateNearestTruck()">Place Order</button>              
+                    </div>
+                </div>
+                <div class="card my-3">
+                    <div class="card-header text-center">Nearest Truck Assigned</div>
+                    <div class="card-body text-center">
+                        <span id="nearestTruck"> Not Yet Assigned</span>
                     </div>
                 </div>
             </div>
@@ -137,6 +150,7 @@
         }
         else {
             // Redirecting to the order page
+
 
             // Getting the tracks through it from the server
            axios.get("/Tracks/" + selectedHouse).then(function(response) {
@@ -213,22 +227,79 @@
         };
 
         socket.onmessage = (event) => {
-            console.log(`Received truck${id} data`, JSON.parse(event.data));
+            // console.log(`Received truck${id} data`, JSON.parse(event.data));
             // truckPointer.setAttribute("visibility", "visible");
 
             let truckData = JSON.parse(event.data);
-            // truckX.innerHTML = truckData.x;
-            // truckY.innerHTML = truckData.y;
+            truckCoordinates[id] = {
+                x : truckData.x,
+                y : truckData.y
+            }
+            //  truckX.innerHTML = truckData.x;
+            //  truckY.innerHTML = truckData.y;
             drawPoint(`Truck${id}Pointer`, truckData.x, truckData.y, color);
+            console.log(truckCoordinates)
         };
 
         socket.onclose = () => {
             console.log(`truck${id} WebSocket connection closed.`);
-            truckX.innerHTML = "No Data";
-            truckY.innerHTML = "No Data";
+            //  truckX.innerHTML = "No Data";
+            //  truckY.innerHTML = "No Data";
             truckPointer.setAttribute("visibility", "hidden");
         };
 
+    }
+
+    /*
+    1 (47, 60)
+    2 (71, 60)
+    3 (35, 96)
+    4 (11, 60)
+    5 (23, 6)
+    6 (29, 12)
+    7 (47, 24)
+    8 (59, -18)
+*/
+var truckCoordinates = {
+        1 : {x : 0, y : 0},
+        2 : {x : 0, y : 0},
+        3 : {x : 0, y : 0},
+        4 : {x : 0, y : 0},
+    }
+
+    let houseCoordinates = {
+        house1 : {
+            x : 47,
+            y : 60
+        },
+        house2 : {
+            x : 71,
+            y : 60
+        },
+        house3 : {
+            x : 35,
+            y : 96
+        },
+        house4 : {
+            x : 11,
+            y : 60
+        },
+        house5 : {
+            x : 23,
+            y : 6
+        },
+        house6 : {
+            x : 29,
+            y : 12
+        },
+        house7 : {
+            x : 47,
+            y : 24
+        },
+        house8 : {
+            x : 59,
+            y : -18
+        }
     }
 
     var socket1; // Variable for the WebSocket connection for Truck 1
@@ -236,6 +307,7 @@
     var socket3; // Variable for the WebSocket connection for Truck 3
     var socket4; // Variable for the WebSocket connection for Truck 4
 
+   
 
     initializeTruckSocket(1, "red", socket1);
     initializeTruckSocket(2, "blue", socket2);
@@ -252,6 +324,28 @@
         document.getElementById(id).setAttribute("cx", X);
         document.getElementById(id).setAttribute("cy", Y);
 
+    }
+
+    function calculateNearestTruck(){
+        console.log(houseCoordinates[selectedHouse])
+        let dist1 = Math.abs(houseCoordinates[selectedHouse].x - truckCoordinates[1].x) + Math.abs(houseCoordinates[selectedHouse].y - truckCoordinates[1].y); 
+        let dist2 = Math.abs(houseCoordinates[selectedHouse].x - truckCoordinates[2].x) + Math.abs(houseCoordinates[selectedHouse].y - truckCoordinates[2].y); 
+        let dist3 = Math.abs(houseCoordinates[selectedHouse].x - truckCoordinates[3].x) + Math.abs(houseCoordinates[selectedHouse].y - truckCoordinates[3].y); 
+        let dist4 = Math.abs(houseCoordinates[selectedHouse].x - truckCoordinates[4].x) + Math.abs(houseCoordinates[selectedHouse].y - truckCoordinates[4].y); 
+        //find the minimum distance and return the truck number
+        let min = Math.min(dist1, dist2, dist3, dist4);
+        if(min == dist1) {
+            document.getElementById("nearestTruck").innerHTML = "Truck 1 🟥";
+        }
+        else if(min == dist2) {
+            document.getElementById("nearestTruck").innerHTML = "Truck 2 🟦";
+        }
+        else if(min == dist3) {
+            document.getElementById("nearestTruck").innerHTML = "Truck 3 🟩";
+        }
+        else if(min == dist4) {
+            document.getElementById("nearestTruck").innerHTML = "Truck 4 🟨";
+        }
     }
 
 </script>

@@ -48,10 +48,27 @@ CameraWebsocket.onopen = () => {
     console.log(`Camera${id} WebSocket connection established.`);
 };
 
+function uint8ArrayToBase64(uint8Array) {
+    let binary = '';
+    uint8Array.forEach((byte) => {
+      binary += String.fromCharCode(byte);
+    });
+    return btoa(binary);
+  }
+
 CameraWebsocket.onmessage = (event) => {
     let data = JSON.parse(event.data);
     console.log(`Received Camera1${id} data`, data);
-    Camera1.src = "data:image/png;base64," + data.image;
+    //convert data.image (which is a array representing image) to base 64
+    console.log(data.image);
+    let byteValues = data.image.match(/\d+/g).map(Number);
+
+    // Convert the array of bytes to a Uint8Array
+    let uint8Array = new Uint8Array(byteValues);
+    console.log(uint8Array);
+    let base64String = uint8ArrayToBase64(uint8Array);
+    console.log(base64String);
+    Camera1.src = `data:image/png;base64,${base64String}`;
 };
 
 CameraWebsocket.onclose = () => {
