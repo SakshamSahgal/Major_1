@@ -4,26 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Dashboard</title>
-    <script>
-        let selectedHouse = null;
-        function selectHouse(name) {
-            alert(name + " Selected!");
-            console.log(name);
-            if(selectedHouse != null) 
-                document.getElementById(selectedHouse).setAttribute("fill","#ffffff"); // Resetting the previous selected house
-            
-            selectedHouse = name;
-            document.getElementById(selectedHouse).setAttribute("fill","red");
-            document.getElementById("HouseSelected").innerHTML = name;
-          }
-    </script>
 </head>
 
 <%- include('./ReusableComponents/BootstrapCDN.ejs') %>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-success py-4">
         <div class="container-fluid">
-            <h5>ORDER</h1>
+            <h5>ORDER</h5>
         </div>
     </nav>
     <div class="container-fluid">
@@ -136,6 +123,25 @@
 <!-- Axios CDN -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
+    let selectedHouse = null;
+    function selectHouse(name) {
+        alert(name + " Selected!");
+        
+
+        document.getElementById("TracksPallet").hidden = true;    //Hiding the TracksPallet
+        document.getElementById("OrderPallet").hidden = true;     //Hiding the Order Pallet
+        document.getElementById("nearestTruckPallet").hidden = true; //Hiding the nearestTruck Pallet
+        console.log(name);
+        
+        if(selectedHouse != null) 
+            document.getElementById(selectedHouse).setAttribute("fill","#ffffff"); // Resetting the previous selected house
+        
+        selectedHouse = name;
+        document.getElementById(selectedHouse).setAttribute("fill","red");
+        document.getElementById("HouseSelected").innerHTML = name;
+      }
+</script>
+<script>
 
     // This is the function that will be called when the user clicks on the select house button
     
@@ -156,9 +162,8 @@
 
             //reveal the order pallet
             document.getElementById("OrderPallet").hidden = false;
-            document.getElementById("nearestTruckPallet").hidden = false;
             document.getElementById("TracksPallet").hidden = false;
-
+            
             // Getting the tracks through it from the server
            axios.get("/Tracks/" + selectedHouse).then(function(response) {
             
@@ -345,6 +350,7 @@ var truckCoordinates = {
     }
 
     function calculateNearestTruck(){
+        document.getElementById("nearestTruckPallet").hidden = false;
         console.log(houseCoordinates[selectedHouse])
         let dist = {
             1 : Math.abs(houseCoordinates[selectedHouse].x - truckCoordinates[1].x) + Math.abs(houseCoordinates[selectedHouse].y - truckCoordinates[1].y),
@@ -358,13 +364,7 @@ var truckCoordinates = {
         let min = 100000000;
 
         for(let i=0;i<selectedTrucks.length;i++){
-
             min = Math.min(min,dist[selectedTrucks[i]]);
-
-            // if(dist[selectedTrucks[i]] == Math.min(dist[1],dist[2],dist[3],dist[4])){
-            //     document.getElementById("nearestTruck").innerHTML = "Truck " + selectedTrucks[i];
-            //     break;
-            // }
         }
 
         for(let i=0;i<selectedTrucks.length;i++){
